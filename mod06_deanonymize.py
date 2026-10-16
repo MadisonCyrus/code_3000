@@ -18,9 +18,11 @@ def link_records(anon_df, aux_df):
       anon_id, matched_name
     containing ONLY uniquely matched records.
     """
-    identifiers = {"age", "zip3", "gender"}
+    identifiers = ["age", "zip3", "gender"]
     merged = anon_df.merge(aux_df, on=identifiers) 
-    return merged
+    merged = merged.drop_duplicates(subset="anon_id", keep=False)
+    merged = merged.rename(columns={"name": "matched_name"})
+    return merged[["anon_id", "matched_name"]]
     #raise NotImplementedError
 
 
